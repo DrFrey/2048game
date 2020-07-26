@@ -92,46 +92,43 @@ class MainActivity : AppCompatActivity() {
                                     } else {
                                         Toast.makeText(
                                             this@MainActivity,
-                                            "error in creating new value",
+                                            "error creating new value",
                                             Toast.LENGTH_LONG
                                         ).show()
                                     }
                                 // если предыдущая клетка пустая, идем вперед, пока не доходим до непустой
                                 } else if (row[i + 1].text == "") {
-
-                                }
-                            }
-
-
-
-                            if(lastEmpty == 3) {
-                                row[lastEmpty].text = row[i].text
-                                row[lastEmpty].background = row[i].background
-                                row[i].text = ""
-                                row[i].setBackgroundResource(R.drawable.button_empty)
-                                lastEmpty = i
-                            // если уже есть заполненные клетки за текущей, сравниваем значения
-                            } else if(i < 3 && lastEmpty < 3) {
-                                //если значения равны, создае новую клетку с новым значением, а старую обнуляем
-                                if (row[i].text == row[lastEmpty + 1].text) {
-                                    var oldValue = row[i].text.toString().toInt()
-                                    var newValue = oldValue * 2
-                                    var newFieldButton = newField(newValue)
-                                    if (newFieldButton != null) {
-                                        row[lastEmpty + 1] = newFieldButton
-                                        row[i].text = ""
-                                        row[i].setBackgroundResource(R.drawable.button_empty)
-                                        lastEmpty = i
-                                    } else {
-                                        Toast.makeText(this@MainActivity, "error in creating new value", Toast.LENGTH_LONG).show()
+                                    var currentIndex = i + 1
+                                    while (currentIndex < 3) {
+                                        if (row[currentIndex + 1].text == "" && currentIndex + 1 == 3) {
+                                            row[currentIndex + 1].text = row[i].text
+                                            row[currentIndex + 1].background = row[i].background
+                                            row[i].text = ""
+                                            row[i].setBackgroundResource(R.drawable.button_empty)
+                                        } else if (row[currentIndex + 1].text == "") {
+                                            currentIndex++
+                                        } else if (row[currentIndex].text == row[currentIndex + 1].text) {
+                                            var oldValue = row[currentIndex].text.toString().toInt()
+                                            var newValue = oldValue * 2
+                                            var newFieldButton = newField(newValue)
+                                            if (newFieldButton != null) {
+                                                row[currentIndex + 1] = newFieldButton
+                                                row[currentIndex].text = ""
+                                                row[currentIndex].setBackgroundResource(R.drawable.button_empty)
+                                            } else {
+                                                Toast.makeText(
+                                                    this@MainActivity,
+                                                    "error creating new value",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                            }
+                                        } else {
+                                            row[currentIndex].text = row[i].text
+                                            row[currentIndex].background = row[i].background
+                                            row[i].text = ""
+                                            row[i].setBackgroundResource(R.drawable.button_empty)
+                                        }
                                     }
-                                // если нет, сдвигаем текущую клетку на свободное место
-                                } else {
-                                    row[lastEmpty].text = row[i].text
-                                    row[lastEmpty].background = row[i].background
-                                    row[i].text = ""
-                                    row[i].setBackgroundResource(R.drawable.button_empty)
-                                    lastEmpty = i
                                 }
                             }
                         }
