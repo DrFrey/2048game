@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/game_score_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/game_score"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/game_field_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/game_field_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button_1_1"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_1_1_text" />
+
+            <Button
+                android:id="@+id/button_1_2"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_1_2_text" />
+
+            <Button
+                android:id="@+id/button_1_3"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_1_3_text" />
+
+            <Button
+                android:id="@+id/button_1_4"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_1_4_text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button_2_1"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_2_1_text" />
+
+            <Button
+                android:id="@+id/button_2_2"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_2_2_text" />
+
+            <Button
+                android:id="@+id/button_2_3"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_2_3_text" />
+
+            <Button
+                android:id="@+id/button_2_4"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_2_4_text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button_3_1"
+                android:layout_width="wrap_content"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_3_1_text" />
+
+            <Button
+                android:id="@+id/button_3_2"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_3_2_text" />
+
+            <Button
+                android:id="@+id/button_3_3"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_3_3_text" />
+
+            <Button
+                android:id="@+id/button_3_4"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_3_4_text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button_4_1"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_4_1_text" />
+
+            <Button
+                android:id="@+id/button_4_2"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_4_2_text" />
+
+            <Button
+                android:id="@+id/button_4_3"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_4_3_text" />
+
+            <Button
+                android:id="@+id/button_4_4"
+                android:background="@drawable/button_empty"
+                android:text="@string/button_4_4_text" />
+        </TableRow>
+    </TableLayout>
+
+    <FrameLayout
+        android:id="@+id/transparent_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/game_field_view"
+        app:layout_constraintEnd_toEndOf="@+id/game_field_view"
+        app:layout_constraintStart_toStartOf="@+id/game_field_view"
+        app:layout_constraintTop_toTopOf="@+id/game_field_view">
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/reset_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="reset"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
