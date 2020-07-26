@@ -75,60 +75,48 @@ class MainActivity : AppCompatActivity() {
                     .makeText(this@MainActivity, "Swiped right", Toast.LENGTH_SHORT)
                     .show()
                 for (row in gameField){
+                    var lastFoundFieldIndex : Int = 4
+                    var foundPair : Boolean = false
                     for (i in 3 downTo 0) {
-                        // если клетка не пустая
                         if(row[i].text != "") {
-                            // если это не последний в ряду элемент, сравниваем значения с предыдущим
-                            if (i < 3) {
-                                //если значения равны, создаем новую клетку с новым значением, а старую обнуляем
-                                if (row[i].text == row[i + 1].text) {
-                                    var oldValue = row[i].text.toString().toInt()
-                                    var newValue = oldValue * 2
-                                    var newFieldButton = newField(newValue)
-                                    if (newFieldButton != null) {
-                                        row[i + 1] = newFieldButton
+                            if (lastFoundFieldIndex == 4) {
+                                lastFoundFieldIndex--
+                                if (i != 3) {
+                                    row[lastFoundFieldIndex].text = row[i].text
+                                    row[lastFoundFieldIndex].background = row[i].background
+                                    row[i].text = ""
+                                    row[i].setBackgroundResource(R.drawable.button_empty)
+                                }
+                            } else {
+                                if (row[i].text == row[lastFoundFieldIndex].text) {
+                                    if (!foundPair) {
+                                        foundPair = true
+                                        val newFieldButton = newField(row[i].text.toString())
+                                        if (newFieldButton != null) {
+                                            row[lastFoundFieldIndex] = newFieldButton
+                                            row[i].text = ""
+                                            row[i].setBackgroundResource(R.drawable.button_empty)
+                                        } else {
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                "error creating new value",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                    } else {
+                                        foundPair = false
+                                        lastFoundFieldIndex--
+                                        row[lastFoundFieldIndex].text = row[i].text
+                                        row[lastFoundFieldIndex].background = row[i].background
                                         row[i].text = ""
                                         row[i].setBackgroundResource(R.drawable.button_empty)
-                                    } else {
-                                        Toast.makeText(
-                                            this@MainActivity,
-                                            "error creating new value",
-                                            Toast.LENGTH_LONG
-                                        ).show()
                                     }
-                                // если предыдущая клетка пустая, идем вперед, пока не доходим до непустой
-                                } else if (row[i + 1].text == "") {
-                                    var currentIndex = i + 1
-                                    while (currentIndex < 3) {
-                                        if (row[currentIndex + 1].text == "" && currentIndex + 1 == 3) {
-                                            row[currentIndex + 1].text = row[i].text
-                                            row[currentIndex + 1].background = row[i].background
-                                            row[i].text = ""
-                                            row[i].setBackgroundResource(R.drawable.button_empty)
-                                        } else if (row[currentIndex + 1].text == "") {
-                                            currentIndex++
-                                        } else if (row[currentIndex].text == row[currentIndex + 1].text) {
-                                            var oldValue = row[currentIndex].text.toString().toInt()
-                                            var newValue = oldValue * 2
-                                            var newFieldButton = newField(newValue)
-                                            if (newFieldButton != null) {
-                                                row[currentIndex + 1] = newFieldButton
-                                                row[currentIndex].text = ""
-                                                row[currentIndex].setBackgroundResource(R.drawable.button_empty)
-                                            } else {
-                                                Toast.makeText(
-                                                    this@MainActivity,
-                                                    "error creating new value",
-                                                    Toast.LENGTH_LONG
-                                                ).show()
-                                            }
-                                        } else {
-                                            row[currentIndex].text = row[i].text
-                                            row[currentIndex].background = row[i].background
-                                            row[i].text = ""
-                                            row[i].setBackgroundResource(R.drawable.button_empty)
-                                        }
-                                    }
+                                } else {
+                                    lastFoundFieldIndex--
+                                    row[lastFoundFieldIndex].text = row[i].text
+                                    row[lastFoundFieldIndex].background = row[i].background
+                                    row[i].text = ""
+                                    row[i].setBackgroundResource(R.drawable.button_empty)
                                 }
                             }
                         }
@@ -147,8 +135,9 @@ class MainActivity : AppCompatActivity() {
         gameStart()
     }
 
-    fun newField(newValue: Int): Button? {
+    fun newField(oldValue: String): Button? {
         val newButton = Button(this)
+        val newValue = oldValue.toInt() * 2
         when(newValue) {
             4 -> {
                 newButton.text = "4"
