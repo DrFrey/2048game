@@ -1,20 +1,9 @@
 <resources>
     <string name="app_name">2048game</string>
-    <string name="button_1_1_text"></string>
-    <string name="button_1_2_text"></string>
-    <string name="button_1_3_text"></string>
-    <string name="button_1_4_text"></string>
-    <string name="button_2_1_text"></string>
-    <string name="button_2_2_text"></string>
-    <string name="button_2_3_text"></string>
-    <string name="button_2_4_text"></string>
-    <string name="button_3_1_text"></string>
-    <string name="button_3_2_text"></string>
-    <string name="button_3_3_text"></string>
-    <string name="button_3_4_text"></string>
-    <string name="button_4_1_text"></string>
-    <string name="button_4_2_text"></string>
-    <string name="button_4_3_text"></string>
-    <string name="button_4_4_text"></string>
     <string name="game_score">Score: %1$d</string>
+    <string name="game_win">You win!</string>
+    <string name="game_lose">You lose!</string>
+    <string name="record_score">Record: %1$d</string>
+    <string name="reset_btn_text">Reset</string>
+    <string name="start_btn_text">Start</string>
 </resources>
