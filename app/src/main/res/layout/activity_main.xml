@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#19767775"
     tools:context=".MainActivity">
 
     <TextView
@@ -132,6 +133,7 @@
         android:id="@+id/transparent_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/game_field_view"
         app:layout_constraintEnd_toEndOf="@+id/game_field_view"
         app:layout_constraintStart_toStartOf="@+id/game_field_view"
@@ -143,6 +145,7 @@
         android:id="@+id/result_tv"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="#92CEF1AB"
         android:gravity="center_horizontal|center_vertical"
         android:textAlignment="center"
         android:textSize="36sp"

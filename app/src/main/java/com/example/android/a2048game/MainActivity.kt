@@ -1,11 +1,11 @@
 package com.example.android.a2048game
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.core.view.isVisible
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -14,12 +14,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var swipeViewHolder : FrameLayout
     private lateinit var resetButton : Button
     private lateinit var resultTextView : TextView
+    private lateinit var recordTextView : TextView
     private lateinit var startGameButton : Button
 
     private var emptyFields : Int = 16
     private var score : Int = 0
 
     private lateinit var gameField : Array<Array<Button>>
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         swipeViewHolder = findViewById(R.id.transparent_view)
         resultTextView = findViewById(R.id.result_tv)
         gameScoreTextView = findViewById(R.id.game_score_tv)
+        recordTextView = findViewById(R.id.record_tv)
 
         gameField = Array(4) {row ->
             Array(4) {col ->
@@ -52,6 +56,201 @@ class MainActivity : AppCompatActivity() {
         gameField[3][2] = findViewById(R.id.button_4_3)
         gameField[3][3] = findViewById(R.id.button_4_4)
 
+    /*
+        swipeViewHolder.setOnTouchListener(object : OnSwipeTouchListener(this@MainActivity) {
+            override fun onSwipeDown() {
+                super.onSwipeDown()
+
+                for (col in 0..3){
+                    var lastFoundFieldIndex : Int = 4
+                    var foundPair : Boolean = false
+                    for (row in 3 downTo 0) {
+                        if(gameField[row][col].text != "") {
+                            if (lastFoundFieldIndex == 4) {
+                                lastFoundFieldIndex--
+                                if (row != 3) {
+                                    switchFieldsInColumn(col, row, lastFoundFieldIndex)
+                                }
+                            } else {
+                                if (gameField[row][col].text == gameField[lastFoundFieldIndex][col].text) {
+                                    if (!foundPair) {
+                                        foundPair = true
+                                        val newFieldButton = newField(gameField[row][col].text.toString().toInt())
+                                        if (newFieldButton != null) {
+                                            gameField[lastFoundFieldIndex][col].text = newFieldButton.text
+                                            gameField[lastFoundFieldIndex][col].background = newFieldButton.background
+                                            gameField[row][col].text = ""
+                                            gameField[row][col].setBackgroundResource(R.drawable.button_empty)
+                                        } else {
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                "error creating new value",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                    } else {
+                                        foundPair = false
+                                        lastFoundFieldIndex--
+                                        switchFieldsInColumn(col, row, lastFoundFieldIndex)
+                                    }
+                                } else if(lastFoundFieldIndex - row > 1) {
+                                    lastFoundFieldIndex--
+                                    switchFieldsInColumn(col, row, lastFoundFieldIndex)
+                                } else {
+                                    lastFoundFieldIndex--
+                                }
+                            }
+                        }
+                    }
+                }
+                newFieldWithTwo()
+            }
+
+            override fun onSwipeUp() {
+                super.onSwipeUp()
+
+                for (col in 0..3){
+                    var lastFoundFieldIndex : Int = -1
+                    var foundPair : Boolean = false
+                    for (row in 0..3) {
+                        if(gameField[row][col].text != "") {
+                            if (lastFoundFieldIndex == -1) {
+                                lastFoundFieldIndex++
+                                if (row != 0) {
+                                    switchFieldsInColumn(col, row, lastFoundFieldIndex)
+                                }
+                            } else {
+                                if (gameField[row][col].text == gameField[lastFoundFieldIndex][col].text) {
+                                    if (!foundPair) {
+                                        foundPair = true
+                                        val newFieldButton = newField(gameField[row][col].text.toString().toInt())
+                                        if (newFieldButton != null) {
+                                            gameField[lastFoundFieldIndex][col].text = newFieldButton.text
+                                            gameField[lastFoundFieldIndex][col].background = newFieldButton.background
+                                            gameField[row][col].text = ""
+                                            gameField[row][col].setBackgroundResource(R.drawable.button_empty)
+                                        } else {
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                "error creating new value",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                    } else {
+                                        foundPair = false
+                                        lastFoundFieldIndex++
+                                        switchFieldsInColumn(col, row, lastFoundFieldIndex)
+                                    }
+                                } else if(row - lastFoundFieldIndex > 1) {
+                                    lastFoundFieldIndex++
+                                    switchFieldsInColumn(col, row, lastFoundFieldIndex)
+                                } else {
+                                    lastFoundFieldIndex++
+                                }
+                            }
+                        }
+                    }
+                }
+                newFieldWithTwo()
+            }
+
+            override fun onSwipeLeft() {
+                super.onSwipeLeft()
+
+                for (row in gameField){
+                    var lastFoundFieldIndex : Int = -1
+                    var foundPair : Boolean = false
+                    for (i in 0..3) {
+                        if(row[i].text != "") {
+                            if (lastFoundFieldIndex == -1) {
+                                lastFoundFieldIndex++
+                                if (i != 0) {
+                                    switchFieldsInRow(gameField.indexOf(row), i, lastFoundFieldIndex)
+                                }
+                            } else {
+                                if (row[i].text == row[lastFoundFieldIndex].text) {
+                                    if (!foundPair) {
+                                        foundPair = true
+                                        val newFieldButton = newField(row[i].text.toString().toInt())
+                                        if (newFieldButton != null) {
+                                            row[lastFoundFieldIndex].text = newFieldButton.text
+                                            row[lastFoundFieldIndex].background = newFieldButton.background
+                                            row[i].text = ""
+                                            row[i].setBackgroundResource(R.drawable.button_empty)
+                                        } else {
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                "error creating new value",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                    } else {
+                                        foundPair = false
+                                        lastFoundFieldIndex++
+                                        switchFieldsInRow(gameField.indexOf(row), i, lastFoundFieldIndex)
+                                    }
+                                } else if(i - lastFoundFieldIndex > 1) {
+                                    lastFoundFieldIndex++
+                                    switchFieldsInRow(gameField.indexOf(row), i, lastFoundFieldIndex)
+                                } else {
+                                    lastFoundFieldIndex++
+                                }
+                            }
+                        }
+                    }
+                }
+                newFieldWithTwo()
+            }
+
+            override fun onSwipeRight() {
+                super.onSwipeRight()
+
+                for (row in gameField){
+                    var lastFoundFieldIndex : Int = 4
+                    var foundPair : Boolean = false
+                    for (i in 3 downTo 0) {
+                        if(row[i].text != "") {
+                            if (lastFoundFieldIndex == 4) {
+                                lastFoundFieldIndex--
+                                if (i != 3) {
+                                    switchFieldsInRow(gameField.indexOf(row), i, lastFoundFieldIndex)
+                                }
+                            } else {
+                                if (row[i].text == row[lastFoundFieldIndex].text) {
+                                    if (!foundPair) {
+                                        foundPair = true
+                                        val newFieldButton = newField(row[i].text.toString().toInt())
+                                        if (newFieldButton != null) {
+                                            row[lastFoundFieldIndex].text = newFieldButton.text
+                                            row[lastFoundFieldIndex].background = newFieldButton.background
+                                            row[i].text = ""
+                                            row[i].setBackgroundResource(R.drawable.button_empty)
+                                        } else {
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                "error creating new value",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                    } else {
+                                        foundPair = false
+                                        lastFoundFieldIndex--
+                                        switchFieldsInRow(gameField.indexOf(row), i, lastFoundFieldIndex)
+                                    }
+                                } else if(lastFoundFieldIndex - i > 1) {
+                                    lastFoundFieldIndex--
+                                    switchFieldsInRow(gameField.indexOf(row), i, lastFoundFieldIndex)
+                                } else {
+                                    lastFoundFieldIndex--
+                                }
+                            }
+                        }
+                    }
+                }
+                newFieldWithTwo()
+            }
+        })
+    */
 
         swipeViewHolder.setOnTouchListener(object : OnSwipeTouchListener(this@MainActivity) {
             override fun onSwipeDown() {
@@ -247,6 +446,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+
         resetButton = findViewById(R.id.reset_button)
         resetButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -264,6 +464,7 @@ class MainActivity : AppCompatActivity() {
 
         setInitialScore()
     }
+
 
     fun switchFieldsInRow(row: Int, fromField: Int, toField: Int) {
         gameField[row][toField].text = gameField[row][fromField].text
@@ -386,6 +587,7 @@ class MainActivity : AppCompatActivity() {
     fun gameStart() {
         emptyFields = 16
         score = 0
+
         swipeViewHolder.visibility = View.VISIBLE
         resultTextView.visibility = View.INVISIBLE
 
@@ -400,15 +602,31 @@ class MainActivity : AppCompatActivity() {
         newFieldWithTwo()
         newFieldWithTwo()
     }
+
     fun setInitialScore() {
         val initialScore = getString(R.string.game_score, score)
         gameScoreTextView.text = initialScore
+
+        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        val highScore = sharedPref.getInt(getString(R.string.saved_high_score_key), 0)
+        recordTextView.text = getString(R.string.record_score, highScore)
     }
+
+
     fun gameOver(result: Boolean) {
         if (result) {
             resultTextView.text = getString(R.string.game_win)
         } else {
             resultTextView.text = getString(R.string.game_lose)
+        }
+        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        val currentRecordScore = sharedPref.getInt(getString(R.string.saved_high_score_key), 0)
+        if (score > currentRecordScore) {
+            with (sharedPref.edit()) {
+                putInt(getString(R.string.saved_high_score_key), score)
+                commit()
+            }
+            recordTextView.text = getString(R.string.record_score, score)
         }
         swipeViewHolder.visibility = View.INVISIBLE
         resultTextView.visibility = View.VISIBLE
