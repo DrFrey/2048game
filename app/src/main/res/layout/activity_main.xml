@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#19767775"
+    android:background="@color/primaryColor"
     tools:context=".MainActivity">
 
     <TextView
@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/game_score"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/primaryTextColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/game_field_view"
         app:layout_constraintEnd_toStartOf="@id/record_tv"
@@ -157,23 +157,12 @@
         app:layout_constraintTop_toTopOf="@+id/game_field_view"
         tools:text="text" />
 
-    <Button
-        android:id="@+id/reset_button"
-        style="@style/Widget.AppCompat.Button.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reset_btn_text"
-        app:layout_constraintBottom_toTopOf="@+id/game_field_view"
-        app:layout_constraintEnd_toEndOf="@+id/record_tv"
-        app:layout_constraintStart_toStartOf="@+id/record_tv"
-        app:layout_constraintTop_toBottomOf="@+id/record_tv" />
-
     <TextView
         android:id="@+id/record_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/record_score"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/primaryTextColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/game_field_view"
         app:layout_constraintEnd_toEndOf="parent"
@@ -182,13 +171,17 @@
 
     <Button
         android:id="@+id/start_game_button"
-        style="@style/Widget.AppCompat.Button.Small"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/secondaryColor"
+        android:padding="16dp"
         android:text="@string/start_btn_text"
-        app:layout_constraintBottom_toTopOf="@+id/game_field_view"
-        app:layout_constraintEnd_toEndOf="@+id/game_score_tv"
-        app:layout_constraintStart_toStartOf="@+id/game_score_tv"
-        app:layout_constraintTop_toBottomOf="@+id/game_score_tv" />
+        android:textColor="@color/primaryTextColor"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

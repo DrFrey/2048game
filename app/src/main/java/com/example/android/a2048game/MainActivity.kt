@@ -14,7 +14,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var gameScoreTextView : TextView
     private lateinit var swipeViewHolder : FrameLayout
-    private lateinit var resetButton : Button
     private lateinit var resultTextView : TextView
     private lateinit var recordTextView : TextView
     private lateinit var startGameButton : Button
@@ -219,13 +218,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        resetButton = findViewById(R.id.reset_button)
-        resetButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                gameStart()
-            }
-        })
-
         startGameButton = findViewById(R.id.start_game_button)
         startGameButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -261,7 +253,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         Log.d(TAG, "on resume triggered")
 
-
         super.onResume()
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
         val savedArray = sharedPref.getString(getString(R.string.saved_array_key), "")
@@ -280,10 +271,12 @@ class MainActivity : AppCompatActivity() {
             }
             refreshField()
             swipeViewHolder.visibility = View.VISIBLE
+            startGameButton.text = getString(R.string.reset_btn_text)
+            emptyFields = sharedPref.getInt(getString(R.string.saved_empty_fields_key), 16)
+            score = sharedPref.getInt(getString(R.string.saved_current_score_key), 0)
+            gameScoreTextView.text = getString(R.string.game_score, score)
         }
-        emptyFields = sharedPref.getInt(getString(R.string.saved_empty_fields_key), 16)
-        score = sharedPref.getInt(getString(R.string.saved_current_score_key), 0)
-        gameScoreTextView.text = getString(R.string.game_score, score)
+
         Log.d(TAG, "score on resume = " + score)
         Log.d(TAG, "empty on resume = " + emptyFields)
     }
@@ -390,11 +383,14 @@ class MainActivity : AppCompatActivity() {
     fun gameStart() {
         emptyFields = 16
         score = 0
+        isGameOver = false
 
         gameFieldArray = arrayOf(intArrayOf(0, 0, 0, 0),
             intArrayOf(0, 0, 0, 0),
             intArrayOf(0, 0, 0, 0),
             intArrayOf(0, 0, 0, 0))
+
+        startGameButton.text = getString(R.string.reset_btn_text)
 
         swipeViewHolder.visibility = View.VISIBLE
         resultTextView.visibility = View.INVISIBLE
@@ -418,11 +414,14 @@ class MainActivity : AppCompatActivity() {
 
     fun gameOver(result: Boolean) {
         isGameOver = true
+        startGameButton.text = getString(R.string.start_btn_text)
+
         if (result) {
             resultTextView.text = getString(R.string.game_win)
         } else {
             resultTextView.text = getString(R.string.game_lose)
         }
+
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
         val currentRecordScore = sharedPref.getInt(getString(R.string.saved_high_score_key), 0)
 
