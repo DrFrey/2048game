@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import java.lang.StringBuilder
+import java.util.*
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -19,9 +21,12 @@ class MainActivity : AppCompatActivity() {
 
     private var emptyFields : Int = 16
     private var score : Int = 0
+    private var isGameOver : Boolean = false
 
     private lateinit var gameField : Array<Array<Button>>
     private lateinit var gameFieldArray : Array<IntArray>
+
+    private val TAG = "___2048"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -226,10 +231,61 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(v: View?) {
                 gameStart()
             }
-
         })
 
         setInitialScore()
+    }
+
+    override fun onStop() {
+        Log.d(TAG, "on stop triggered")
+        super.onStop()
+        if (!isGameOver) {
+            val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+            val sb = StringBuilder()
+            for (row in gameFieldArray) {
+                for (col in row) {
+                    sb.append(col).append(",")
+                }
+            }
+            with(sharedPref.edit()) {
+                putString(getString(R.string.saved_array_key), sb.toString())
+                putInt(getString(R.string.saved_current_score_key), score)
+                putInt(getString(R.string.saved_empty_fields_key), emptyFields)
+                apply()
+            }
+        }
+        Log.d(TAG, "score on stop = " + score)
+        Log.d(TAG, "empty on stop = " + emptyFields)
+    }
+
+    override fun onResume() {
+        Log.d(TAG, "on resume triggered")
+
+
+        super.onResume()
+        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        val savedArray = sharedPref.getString(getString(R.string.saved_array_key), "")
+        if (savedArray != "") {
+            gameFieldArray = arrayOf(intArrayOf(0, 0, 0, 0),
+                intArrayOf(0, 0, 0, 0),
+                intArrayOf(0, 0, 0, 0),
+                intArrayOf(0, 0, 0, 0))
+
+            val st = StringTokenizer(savedArray, ",")
+
+            for (row in 0..3) {
+                for (col in 0..3) {
+                    gameFieldArray[row][col] = Integer.parseInt(st.nextToken())
+                }
+            }
+            refreshField()
+            swipeViewHolder.visibility = View.VISIBLE
+        }
+        emptyFields = sharedPref.getInt(getString(R.string.saved_empty_fields_key), 16)
+        score = sharedPref.getInt(getString(R.string.saved_current_score_key), 0)
+        gameScoreTextView.text = getString(R.string.game_score, score)
+        Log.d(TAG, "score on resume = " + score)
+        Log.d(TAG, "empty on resume = " + emptyFields)
     }
 
     fun switchFieldsInRow(row: Int, fromField: Int, toField: Int) {
@@ -259,7 +315,7 @@ class MainActivity : AppCompatActivity() {
             emptyFields--
             gameField[randomRow][randomCol].text = "2"
             gameField[randomRow][randomCol].setBackgroundResource(R.drawable.button_2)
-            Log.d("___", "empty fields: " + emptyFields)
+            Log.d(TAG, "empty fields: " + emptyFields)
         }
     }
 
@@ -361,6 +417,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun gameOver(result: Boolean) {
+        isGameOver = true
         if (result) {
             resultTextView.text = getString(R.string.game_win)
         } else {
@@ -368,13 +425,19 @@ class MainActivity : AppCompatActivity() {
         }
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
         val currentRecordScore = sharedPref.getInt(getString(R.string.saved_high_score_key), 0)
-        if (score > currentRecordScore) {
-            with (sharedPref.edit()) {
+
+        with (sharedPref.edit()) {
+            if (score > currentRecordScore) {
                 putInt(getString(R.string.saved_high_score_key), score)
-                commit()
             }
-            recordTextView.text = getString(R.string.record_score, score)
+            putString(getString(R.string.saved_array_key), "")
+            putInt(getString(R.string.saved_current_score_key), 0)
+            putInt(getString(R.string.saved_empty_fields_key), 0)
+            commit()
         }
+
+        recordTextView.text = getString(R.string.record_score, score)
+
         swipeViewHolder.visibility = View.INVISIBLE
         resultTextView.visibility = View.VISIBLE
     }
