@@ -447,8 +447,9 @@ class MainActivity : AppCompatActivity() {
             putInt(getString(R.string.saved_empty_fields_key), 0)
             commit()
         }
-
-        recordTextView.text = getString(R.string.record_score, score)
+        if (score > currentRecordScore) {
+            recordTextView.text = getString(R.string.record_score, score)
+        }
 
         swipeViewHolder.visibility = View.INVISIBLE
         resultTextView.visibility = View.VISIBLE
