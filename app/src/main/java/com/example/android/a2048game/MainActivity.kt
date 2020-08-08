@@ -1,5 +1,6 @@
 package com.example.android.a2048game
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -331,46 +332,57 @@ class MainActivity : AppCompatActivity() {
                     2 -> {
                         col.text = "2"
                         col.setBackgroundResource(R.drawable.button_2)
+                        col.animate().rotationYBy(360f)
                     }
                     4 -> {
                         col.text = "4"
                         col.setBackgroundResource(R.drawable.button_4)
+                        col.animate().rotationYBy(360f)
                     }
                     8 -> {
                         col.text = "8"
                         col.setBackgroundResource(R.drawable.button_8)
+                        col.animate().rotationYBy(360f)
                     }
                     16 -> {
                         col.text = "16"
                         col.setBackgroundResource(R.drawable.button_16)
+                        col.animate().rotationYBy(360f)
                     }
                     32 -> {
                         col.text = "32"
                         col.setBackgroundResource(R.drawable.button_32)
+                        col.animate().rotationYBy(360f)
                     }
                     64 -> {
                         col.text = "64"
                         col.setBackgroundResource(R.drawable.button_64)
+                        col.animate().rotationYBy(360f)
                     }
                     128 -> {
                         col.text = "128"
                         col.setBackgroundResource(R.drawable.button_128)
+                        col.animate().rotationYBy(360f)
                     }
                     256 -> {
                         col.text = "256"
                         col.setBackgroundResource(R.drawable.button_256)
+                        col.animate().rotationYBy(360f)
                     }
                     512 -> {
                         col.text = "512"
                         col.setBackgroundResource(R.drawable.button_512)
+                        col.animate().rotationYBy(360f)
                     }
                     1024 -> {
                         col.text = "1024"
                         col.setBackgroundResource(R.drawable.button_1024)
+                        col.animate().rotationYBy(360f)
                     }
                     2048 -> {
                         col.text = "2048"
                         col.setBackgroundResource(R.drawable.button_2048)
+                        col.animate().rotationYBy(360f)
                     }
                     else -> {
                         Log.d("___", "error!! newValue: " + value)
@@ -379,6 +391,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
     fun gameStart() {
         emptyFields = 16
