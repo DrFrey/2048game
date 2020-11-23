@@ -1,10 +1,14 @@
 package com.example.android.a2048game
 
-import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import java.lang.StringBuilder
@@ -24,11 +28,16 @@ class MainActivity : AppCompatActivity() {
     private var isGameOver : Boolean = false
 
     private lateinit var gameField : Array<Array<Button>>
-    private lateinit var gameFieldArray : Array<IntArray>
+
+    private var gameFieldArray : Array<IntArray> = arrayOf(intArrayOf(0, 0, 0, 0),
+        intArrayOf(0, 0, 0, 0),
+        intArrayOf(0, 0, 0, 0),
+        intArrayOf(0, 0, 0, 0))
 
     private val TAG = "___2048"
 
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -66,8 +75,8 @@ class MainActivity : AppCompatActivity() {
                 super.onSwipeDown()
 
                 for (col in 0..3){
-                    var lastFoundFieldIndex : Int = 4
-                    var foundPair : Boolean = false
+                    var lastFoundFieldIndex = 4
+                    var foundPair = false
                     for (row in 3 downTo 0) {
                         if(gameFieldArray[row][col] != 0) {
                             if (lastFoundFieldIndex == 4) {
@@ -106,7 +115,7 @@ class MainActivity : AppCompatActivity() {
 
                 for (col in 0..3){
                     var lastFoundFieldIndex : Int = -1
-                    var foundPair : Boolean = false
+                    var foundPair = false
                     for (row in 0..3) {
                         if(gameFieldArray[row][col] != 0) {
                             if (lastFoundFieldIndex == -1) {
@@ -145,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
                 for (row in gameFieldArray){
                     var lastFoundFieldIndex : Int = -1
-                    var foundPair : Boolean = false
+                    var foundPair  = false
                     for (i in 0..3) {
                         if(row[i] != 0) {
                             if (lastFoundFieldIndex == -1) {
@@ -183,8 +192,8 @@ class MainActivity : AppCompatActivity() {
                 super.onSwipeRight()
 
                 for (row in gameFieldArray){
-                    var lastFoundFieldIndex : Int = 4
-                    var foundPair : Boolean = false
+                    var lastFoundFieldIndex  = 4
+                    var foundPair  = false
                     for (i in 3 downTo 0) {
                         if(row[i] != 0) {
                             if (lastFoundFieldIndex == 4) {
@@ -220,11 +229,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         startGameButton = findViewById(R.id.start_game_button)
-        startGameButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                gameStart()
-            }
-        })
+        startGameButton.setOnClickListener { gameStart() }
 
         setInitialScore()
     }
@@ -247,8 +252,8 @@ class MainActivity : AppCompatActivity() {
                 apply()
             }
         }
-        Log.d(TAG, "score on stop = " + score)
-        Log.d(TAG, "empty on stop = " + emptyFields)
+        Log.d(TAG, "score on stop = $score")
+        Log.d(TAG, "empty on stop = $emptyFields")
     }
 
     override fun onResume() {
@@ -278,8 +283,25 @@ class MainActivity : AppCompatActivity() {
             gameScoreTextView.text = getString(R.string.game_score, score)
         }
 
-        Log.d(TAG, "score on resume = " + score)
-        Log.d(TAG, "empty on resume = " + emptyFields)
+        Log.d(TAG, "score on resume = $score")
+        Log.d(TAG, "empty on resume = $emptyFields")
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater : MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.help_menu -> {
+                val intent  = Intent(this, OnBoardingActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     fun switchFieldsInRow(row: Int, fromField: Int, toField: Int) {
@@ -292,7 +314,7 @@ class MainActivity : AppCompatActivity() {
         gameFieldArray[fromField][col] = 0
     }
 
-    fun randomIndex() : Int = Random.nextInt(0, 4)
+    private fun randomIndex() : Int = Random.nextInt(0, 4)
 
     fun newFieldWithTwo() {
         if(emptyFields <= 0) {
@@ -309,7 +331,7 @@ class MainActivity : AppCompatActivity() {
             emptyFields--
             gameField[randomRow][randomCol].text = "2"
             gameField[randomRow][randomCol].setBackgroundResource(R.drawable.button_2)
-            Log.d(TAG, "empty fields: " + emptyFields)
+            Log.d(TAG, "empty fields: $emptyFields")
         }
     }
 
@@ -322,71 +344,68 @@ class MainActivity : AppCompatActivity() {
 
     fun refreshField() {
         for (row in gameField) {
-            for (col in row) {
-                val value = gameFieldArray[gameField.indexOf(row)][row.indexOf(col)]
-                when(value) {
-                    0 -> {
-                        col.text = ""
-                        col.setBackgroundResource(R.drawable.button_empty)
-                    }
-                    2 -> {
-                        col.text = "2"
-                        col.setBackgroundResource(R.drawable.button_2)
-                        col.animate().rotationYBy(360f)
-                    }
-                    4 -> {
-                        col.text = "4"
-                        col.setBackgroundResource(R.drawable.button_4)
-                        col.animate().rotationYBy(360f)
-                    }
-                    8 -> {
-                        col.text = "8"
-                        col.setBackgroundResource(R.drawable.button_8)
-                        col.animate().rotationYBy(360f)
-                    }
-                    16 -> {
-                        col.text = "16"
-                        col.setBackgroundResource(R.drawable.button_16)
-                        col.animate().rotationYBy(360f)
-                    }
-                    32 -> {
-                        col.text = "32"
-                        col.setBackgroundResource(R.drawable.button_32)
-                        col.animate().rotationYBy(360f)
-                    }
-                    64 -> {
-                        col.text = "64"
-                        col.setBackgroundResource(R.drawable.button_64)
-                        col.animate().rotationYBy(360f)
-                    }
-                    128 -> {
-                        col.text = "128"
-                        col.setBackgroundResource(R.drawable.button_128)
-                        col.animate().rotationYBy(360f)
-                    }
-                    256 -> {
-                        col.text = "256"
-                        col.setBackgroundResource(R.drawable.button_256)
-                        col.animate().rotationYBy(360f)
-                    }
-                    512 -> {
-                        col.text = "512"
-                        col.setBackgroundResource(R.drawable.button_512)
-                        col.animate().rotationYBy(360f)
-                    }
-                    1024 -> {
-                        col.text = "1024"
-                        col.setBackgroundResource(R.drawable.button_1024)
-                        col.animate().rotationYBy(360f)
-                    }
-                    2048 -> {
-                        col.text = "2048"
-                        col.setBackgroundResource(R.drawable.button_2048)
-                        col.animate().rotationYBy(360f)
-                    }
-                    else -> {
-                        Log.d("___", "error!! newValue: " + value)
-                    }
+            for (col in row) when(val value = gameFieldArray[gameField.indexOf(row)][row.indexOf(col)]) {
+                0 -> {
+                    col.text = ""
+                    col.setBackgroundResource(R.drawable.button_empty)
+                }
+                2 -> {
+                    col.text = "2"
+                    col.setBackgroundResource(R.drawable.button_2)
+                    col.animate().rotationYBy(360f)
+                }
+                4 -> {
+                    col.text = "4"
+                    col.setBackgroundResource(R.drawable.button_4)
+                    col.animate().rotationYBy(360f)
+                }
+                8 -> {
+                    col.text = "8"
+                    col.setBackgroundResource(R.drawable.button_8)
+                    col.animate().rotationYBy(360f)
+                }
+                16 -> {
+                    col.text = "16"
+                    col.setBackgroundResource(R.drawable.button_16)
+                    col.animate().rotationYBy(360f)
+                }
+                32 -> {
+                    col.text = "32"
+                    col.setBackgroundResource(R.drawable.button_32)
+                    col.animate().rotationYBy(360f)
+                }
+                64 -> {
+                    col.text = "64"
+                    col.setBackgroundResource(R.drawable.button_64)
+                    col.animate().rotationYBy(360f)
+                }
+                128 -> {
+                    col.text = "128"
+                    col.setBackgroundResource(R.drawable.button_128)
+                    col.animate().rotationYBy(360f)
+                }
+                256 -> {
+                    col.text = "256"
+                    col.setBackgroundResource(R.drawable.button_256)
+                    col.animate().rotationYBy(360f)
+                }
+                512 -> {
+                    col.text = "512"
+                    col.setBackgroundResource(R.drawable.button_512)
+                    col.animate().rotationYBy(360f)
+                }
+                1024 -> {
+                    col.text = "1024"
+                    col.setBackgroundResource(R.drawable.button_1024)
+                    col.animate().rotationYBy(360f)
+                }
+                2048 -> {
+                    col.text = "2048"
+                    col.setBackgroundResource(R.drawable.button_2048)
+                    col.animate().rotationYBy(360f)
+                }
+                else -> {
+                    Log.d("___", "error!! newValue: " + value)
                 }
             }
         }
@@ -416,7 +435,7 @@ class MainActivity : AppCompatActivity() {
         refreshField()
     }
 
-    fun setInitialScore() {
+    private fun setInitialScore() {
         val initialScore = getString(R.string.game_score, score)
         gameScoreTextView.text = initialScore
 
@@ -425,7 +444,7 @@ class MainActivity : AppCompatActivity() {
         recordTextView.text = getString(R.string.record_score, highScore)
     }
 
-    fun gameOver(result: Boolean) {
+    private fun gameOver(result: Boolean) {
         isGameOver = true
         startGameButton.text = getString(R.string.start_btn_text)
 

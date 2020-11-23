@@ -1,13 +1,22 @@
 <resources>
-    <string name="app_name">2048</string>
+    <string name="app_name" translatable="false">2048</string>
     <string name="game_score">Score: %1$d</string>
     <string name="game_win">You win!</string>
-    <string name="game_lose">You lose!</string>
+    <string name="game_lose">Game over!</string>
     <string name="record_score">Record: %1$d</string>
     <string name="reset_btn_text">Reset</string>
     <string name="start_btn_text">Start</string>
-    <string name="saved_high_score_key">SAVED_HIGH_SCORE</string>
-    <string name="saved_array_key">SAVED_ARRAY_KEY</string>
-    <string name="saved_current_score_key">SAVED_CURRENT_SCORE_KEY</string>
-    <string name="saved_empty_fields_key">SAVED_EMPTY_FIELDS_KEY</string>
+    <string name="saved_high_score_key" translatable="false">SAVED_HIGH_SCORE</string>
+    <string name="saved_array_key" translatable="false">SAVED_ARRAY_KEY</string>
+    <string name="saved_current_score_key" translatable="false">SAVED_CURRENT_SCORE_KEY</string>
+    <string name="saved_empty_fields_key" translatable="false">SAVED_EMPTY_FIELDS_KEY</string>
+    <string name="saved_first_launch_key" translatable="false">SAVED_FIRST_LAUNCH_KEY</string>
+    <string name="help_menu_string">Help</string>
+    <string name="help_image_desc">game rules</string>
+    <string name="help_title">How to play</string>
+    <string name="help_text_1">Swipe in any direction to move numbers</string>
+    <string name="help_text_2">Numbers add up to create new numbers! 2 + 2 = 4, 4 + 4 = 8 and so on…</string>
+    <string name="help_text_3">If the board is full, you lose :(</string>
+    <string name="help_text_4">If you reach 2048, you win! :)</string>
+    <string name="help_button_text">Let\'s play!</string>
 </resources>

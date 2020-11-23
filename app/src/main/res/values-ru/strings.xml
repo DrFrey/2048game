@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_score">Счет: %1$d</string>
+    <string name="game_win">Победа!</string>
+    <string name="game_lose">Конец!</string>
+    <string name="record_score">Рекорд: %1$d</string>
+    <string name="reset_btn_text">Новая игра</string>
+    <string name="start_btn_text">Начать</string>
+    <string name="help_menu_string">Помощь</string>
+    <string name="help_title">Правила игры</string>
+    <string name="help_image_desc">правила игры</string>
+    <string name="help_text_1">Свайпай в любую сторону, чтобы двигать фишки</string>
+    <string name="help_text_2">Числа складываются: 2 + 2 = 4, 4 + 4 = 8 и так далее</string>
+    <string name="help_text_3">Если игровое поле заполняется, ты проиграл :(</string>
+    <string name="help_text_4">Если ты получил 2048, ты выиграл! :)</string>
+    <string name="help_button_text">Всё понятно!</string>
+</resources>
