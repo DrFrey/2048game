@@ -238,7 +238,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "on stop triggered")
         super.onStop()
         if (!isGameOver) {
-            val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+            val sharedPref = getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE) ?: return
             val sb = StringBuilder()
             for (row in gameFieldArray) {
                 for (col in row) {
@@ -260,7 +260,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "on resume triggered")
 
         super.onResume()
-        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        val sharedPref = getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE) ?: return
         val savedArray = sharedPref.getString(getString(R.string.saved_array_key), "")
         if (savedArray != "") {
             gameFieldArray = arrayOf(intArrayOf(0, 0, 0, 0),
@@ -439,7 +439,7 @@ class MainActivity : AppCompatActivity() {
         val initialScore = getString(R.string.game_score, score)
         gameScoreTextView.text = initialScore
 
-        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        val sharedPref = getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE) ?: return
         val highScore = sharedPref.getInt(getString(R.string.saved_high_score_key), 0)
         recordTextView.text = getString(R.string.record_score, highScore)
     }
@@ -454,7 +454,7 @@ class MainActivity : AppCompatActivity() {
             resultTextView.text = getString(R.string.game_lose)
         }
 
-        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        val sharedPref = getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE) ?: return
         val currentRecordScore = sharedPref.getInt(getString(R.string.saved_high_score_key), 0)
 
         with (sharedPref.edit()) {
