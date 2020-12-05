@@ -1,7 +1,3 @@
-layout: page
-title: "Privacy Policy"
-permalink: /privacy_policy/
-
 **Privacy Policy**
 
 Anton Vorovatov built the 2048 app as a Free app. This SERVICE is provided by Anton Vorovatov at no cost and is intended for use as is.
